@@ -147,6 +147,36 @@ def load_rows(path, name_col, date_col, amount_col):
 # Core matching logic
 # ----------------------------------------------------------------------
 
+def check_initials_match(name1, name2):
+    """Returns True if one name is an abbreviation/initial of the other"""
+    n1 = name1.lower().replace('.', '').split()
+    n2 = name2.lower().replace('.', '').split()
+    if not n1 or not n2:
+        return False
+    shortest = n1 if len(n1) < len(n2) else n2
+    longest = n2 if len(n1) < len(n2) else n1
+    if all(len(word) == 1 for word in shortest if word.isalpha()):
+        initials = "".join(shortest)
+        long_initials = "".join([word for word in longest if word])
+        if initials in long_initials:
+            return True
+    return False
+
+def adjust_score_for_business_rules(base_score, l_row, r_row):
+    """Bumps up the match score if it meets safe business exception rules"""
+    final_score = base_score
+    if check_initials_match(l_row.get("_name", ""), r_row.get("_name", "")):
+        final_score += 0.15  # 15% boost for initials like Y. T. Design
+    try:
+        amt1 = float(l_row.get("_amount", 0))
+        amt2 = float(r_row.get("_amount", 0))
+        if abs(amt1 - amt2) <= 1.00:
+            final_score += 0.10  # 10% boost for $1 errors
+    except (ValueError, TypeError):
+        pass
+    return min(final_score, 1.0)
+
+
 def reconcile(left_rows, right_rows, date_tolerance_days, amount_tolerance,
               match_threshold, review_threshold):
     """
@@ -165,6 +195,8 @@ def reconcile(left_rows, right_rows, date_tolerance_days, amount_tolerance,
             d_sim = date_similarity(l["_date"], r["_date"], date_tolerance_days)
             a_sim = amount_similarity(l["_amount"], r["_amount"], amount_tolerance)
             score = overall_score(n_sim, d_sim, a_sim)
+            score = adjust_score_for_business_rules(score, l, r)
+
             if score > 0:  # no point keeping zero-score pairs
                 candidates.append((score, l, r, n_sim, d_sim, a_sim))
 
