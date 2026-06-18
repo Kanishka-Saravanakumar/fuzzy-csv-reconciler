@@ -1,0 +1,18 @@
+invoice_id,client_name,invoice_date,amount
+INV-1010,David Okafor Freelance,2026-05-03,372.25
+INV-1016,Yuki Tanaka Design,2026-05-07,3328.88
+INV-1007,Chen & Associates,2026-05-04,1891.05
+INV-1001,Jonathan Smith Consulting,2026-05-04,271.30
+INV-1012,Summit Legal Partners,2026-05-07,3400.35
+INV-1014,Riverstone Builders Co,2026-05-18,1215.13
+INV-1008,Bluewave Marketing Inc,2026-05-15,2750.71
+INV-1003,Maria Garcia Designs,2026-05-01,604.42
+INV-1004,Acme Robotics LLC,2026-05-21,3551.43
+INV-1015,Riverstone Builders Co,2026-05-26,1679.95
+INV-1013,Lena Müller Photography,2026-05-18,3686.26
+INV-1005,Acme Robotics LLC,2026-05-26,4366.11
+INV-1011,David Okafor Freelance,2026-05-28,639.86
+INV-1002,Jonathan Smith Consulting,2026-05-04,3431.99
+INV-1017,Carlos Mendes Audio,2026-05-08,3763.20
+INV-1006,Priya Patel Studio,2026-05-09,904.08
+INV-1009,Bluewave Marketing Inc,2026-05-10,4172.61
